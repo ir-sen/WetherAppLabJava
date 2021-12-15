@@ -16,10 +16,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String BaseUrl = "api.openweathermap.org/";
-    public static String AppId = "2e65127e909e178d0af311a81f39948c";
-    public static String lat = "35";
-    public static String lon = "139";
+    public static String BaseUrl = "http://api.openweathermap.org/";
+    public static String lat = "55.751244";
+    public static String lon = "37.618423";
 
     private TextView weatherData;
     private Button btn;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WetherService service = retrofit.create(WetherService.class);
+
+        // Call<WeatherResponse> call = service.getCurrentSityData("Moscow", Constants.API_KEY);
         Call<WeatherResponse> call = service.getCurrentWetherData(lat, lon, Constants.API_KEY);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override

@@ -2,6 +2,7 @@ package com.example.wetherapplabjava;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -90,4 +91,28 @@ class Coord {
     @SerializedName("lat")
     public float lat;
 }
+// ---------------
+
+
+class List{
+    public int id;
+    public String name;
+    public Coord coord;
+    public Main main;
+    public int dt;
+    public Wind wind;
+    public Rain rain;
+    public Clouds clouds;
+    public ArrayList<Weather> weather;
+}
+
+class Root{
+    public String cod;
+    public double calctime;
+    public int cnt;
+    public ArrayList<List> list;
+}
+
+
+
 

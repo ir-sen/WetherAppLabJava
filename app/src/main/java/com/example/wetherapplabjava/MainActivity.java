@@ -40,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
 //    public static String lat = "55.751244";
 //    public static String lon = "37.618423";
 
+    public final static String MY_KEY = "KEY";
+
     private TextView weatherData;
     private Button btn;
+    private Button secondBtn;
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -56,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         weatherData = findViewById(R.id.weatherText);
         btn = findViewById(R.id.button);
+        secondBtn = findViewById(R.id.secondActivityBtn);
+
+        secondBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra(MY_KEY, latitude);
+            startActivity(intent);
+        });
+
         btn.setOnClickListener(v -> {
             getCurrentWeather(latitude, longitude);
                 }
@@ -171,12 +182,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Call<WeatherResponse> call = service.getCurrentSityData("Moscow", Constants.API_KEY);
         Call<WeatherResponse> call = service.getCurrentWetherData(lat, lon, Constants.API_KEY);
+
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.code() == 200) {
                     WeatherResponse weatherResponse = response.body();
                     assert weatherResponse != null;
+
+                    double gradus = weatherResponse.main.temp;
+                    gradus = gradus - 273.15;
 
                     String stringBuilder = "Country: " +
                             weatherResponse.sys.country +
@@ -190,11 +205,11 @@ public class MainActivity extends AppCompatActivity {
                             "Temperature(Max): " +
                             weatherResponse.main.temp_max +
                             "\n" +
-                            "Humidity: " +
-                            weatherResponse.main.humidity +
-                            "\n" +
-                            "Pressure: " +
-                            weatherResponse.main.pressure;
+                            "Gradus: " +
+                            gradus
+                            ;
+
+
                     weatherData.setText(stringBuilder);
                 }
             }
@@ -203,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 weatherData.setText(t.getMessage());
             }
+
         });
     }
 

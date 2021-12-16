@@ -11,4 +11,8 @@ public interface WetherService {
     @GET("/data/2.5/weather?")
     Call<WeatherResponse> getCurrentSityData(@Query("q") String sity, @Query("appid") String app_id);
 
+    //api.openweathermap.org/data/2.5/box/city?bbox=12,32,15,37,10&appid=156f1434f604e39edc7f4cab0e4414ce
+    @GET("/data/2.5/box/city?")
+    Call<List> getCityList(@Query("bbox") String number, @Query("appid") String app_id);
+
 }

@@ -3,6 +3,8 @@ package com.example.wetherapplabjava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -51,29 +53,35 @@ public class SecondActivity extends AppCompatActivity {
 
     TextView textV2;
 
-    String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon"};
+    String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon", "Tashkent"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
 
-        //textTest.setText(message);
-        getCurrentWeather();
-
-
+        //citysTemp.add(new CitysTemp("Moscow", "100"));
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        getCurrentWeather(this, recyclerView);
+//        recyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        RecycleAdapter adapter = new RecycleAdapter(this, citysTemp);
+//        recyclerView.setAdapter(adapter);
 
     }
 
 
 
-    void getCurrentWeather() {
+    void getCurrentWeather(Context context, RecyclerView recyclerView) {
+        for (int i = 0; i < city.length; i++) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WetherService service = retrofit.create(WetherService.class);
-        for (int i = 0; i < city.length; i++) {
+
 
             Call<WeatherResponse> call = service.getCurrentSityData(city[i], Constants.API_KEY);
 
@@ -102,17 +110,29 @@ public class SecondActivity extends AppCompatActivity {
                                 weatherResponse.weather +
                                 "\n" +
                                 city[finalI];
+                        double gradus = weatherResponse.main.temp - 273.15;
+                        citysTemp.add(new CitysTemp(city[finalI], weatherResponse.main.temp + ""));
+                        Log.d("TAG", citysTemp.get(0).getCity());
 
-                        Log.d("TAG", city[finalI]);
+                        recyclerView.setHasFixedSize(true);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(linearLayoutManager);
+                        RecycleAdapter adapter = new RecycleAdapter(context, citysTemp);
+                        recyclerView.setAdapter(adapter);
+                        //Log.d("TAG", city[finalI] + " " + weatherResponse.main.temp);
 
 
                         //textTest.setText(stringBuilder);
                     }
+
                 }
+
 
                 @Override
                 public void onFailure(Call<WeatherResponse> call, Throwable t) {
                     //textTest.setText(t.getMessage());
+
                 }
 
             });

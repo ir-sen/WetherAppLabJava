@@ -16,12 +16,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
     private final LayoutInflater inflater;
     private final List<CitysTemp> citys;
 
-    public RecycleAdapter(LayoutInflater inflater, List cityT, java.util.List<CitysTemp> citys) {
-        this.inflater = inflater;
-        this.citys = citys;
-    }
+//    public RecycleAdapter(LayoutInflater inflater, List cityT, java.util.List<CitysTemp> citys) {
+//        this.inflater = inflater;
+//        this.citys = citys;
+//    }
 
-    RecycleAdapter(Context context, List<CitysTemp> citys) {
+    public RecycleAdapter(Context context, List<CitysTemp> citys) {
         this.citys = citys;
         this.inflater = LayoutInflater.from(context);
     }

@@ -45,13 +45,6 @@ public class SecondActivity extends AppCompatActivity {
 
     ArrayList<CitysTemp> citysTemp = new ArrayList<>();
 
-    int PERMISSION_ID = 44;
-    String latitude;
-    String longitude;
-
-    TextView textTest;
-
-    TextView textV2;
 
     String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon", "Tashkent"};
     @Override
@@ -111,7 +104,7 @@ public class SecondActivity extends AppCompatActivity {
                                 "\n" +
                                 city[finalI];
                         double gradus = weatherResponse.main.temp - 273.15;
-                        citysTemp.add(new CitysTemp(city[finalI], weatherResponse.main.temp + ""));
+                        citysTemp.add(new CitysTemp(city[finalI], "Градусов: " + gradus ));
                         Log.d("TAG", citysTemp.get(0).getCity());
 
                         recyclerView.setHasFixedSize(true);

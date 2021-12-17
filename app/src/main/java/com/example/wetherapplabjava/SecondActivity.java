@@ -26,6 +26,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,8 @@ public class SecondActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     public static String BaseUrl = "http://api.openweathermap.org/";
 
+    ArrayList<CitysTemp> citysTemp = new ArrayList<>();
+
     int PERMISSION_ID = 44;
     String latitude;
     String longitude;
@@ -49,28 +52,20 @@ public class SecondActivity extends AppCompatActivity {
     TextView textV2;
 
     String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon"};
-    Map<String, String> citysTemp = new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        textTest = findViewById(R.id.textT);
-        textV2 = findViewById(R.id.textViewHash);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.MY_KEY);
+
+
         //textTest.setText(message);
         getCurrentWeather();
-        textV2.setText("LOOOOOOLLL");
-        textV2.setText(citysTemp.get(4));
+
 
 
     }
 
-    void getTempCitys() {
-        for(Map.Entry<String, String> entry: citysTemp.entrySet()) {
-            Log.d("TAG_LIST", entry.getKey() + entry.getValue());
-        }
-    }
+
 
     void getCurrentWeather() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -91,7 +86,7 @@ public class SecondActivity extends AppCompatActivity {
                     if (response.code() == 200) {
                         WeatherResponse weatherResponse = response.body();
                         assert weatherResponse != null;
-                        citysTemp.put(city[finalI], weatherResponse.main.temp + "");
+                       // citysTemp.put(city[finalI], weatherResponse.main.temp + "");
                         String stringBuilder = "Country: " +
                                 weatherResponse.sys.country +
                                 "\n" +
@@ -106,20 +101,18 @@ public class SecondActivity extends AppCompatActivity {
                                 "\n" +
                                 weatherResponse.weather +
                                 "\n" +
-                                city[finalI] +
-                                "    Temp hash map" +
-                                citysTemp.get(city[finalI]);
+                                city[finalI];
+
+                        Log.d("TAG", city[finalI]);
 
 
-                        Log.d("MY_TAG", "");
-
-                        textTest.setText(stringBuilder);
+                        //textTest.setText(stringBuilder);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                    textTest.setText(t.getMessage());
+                    //textTest.setText(t.getMessage());
                 }
 
             });

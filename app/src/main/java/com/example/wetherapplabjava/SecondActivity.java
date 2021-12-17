@@ -46,7 +46,9 @@ public class SecondActivity extends AppCompatActivity {
     ArrayList<CitysTemp> citysTemp = new ArrayList<>();
 
 
-    String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon", "Tashkent"};
+    String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon", "Tashkent", "Kiev",
+    "Lagos", "Warsaw", "Madrid", "Dubai", "Cairo", "Paris", "Riga"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -37,8 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     public static String BaseUrl = "http://api.openweathermap.org/";
-//    public static String lat = "55.751244";
-//    public static String lon = "37.618423";
 
     public final static String MY_KEY = "KEY";
 

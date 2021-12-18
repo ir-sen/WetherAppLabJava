@@ -45,7 +45,7 @@ public class SecondActivity extends AppCompatActivity {
 
     ArrayList<CitysTemp> citysTemp = new ArrayList<>();
 
-
+// массив городов у которых мы хотим знать погоду можно добавлять и удалять
     String[] city= {"Moscow", "Los Angeles", "Vienna", "Orlando", "Dublin", "Lisbon", "Tashkent", "Kiev",
     "Lagos", "Warsaw", "Madrid", "Dubai", "Cairo", "Paris", "Riga"};
 
@@ -55,22 +55,18 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
 
-        //citysTemp.add(new CitysTemp("Moscow", "100"));
         RecyclerView recyclerView = findViewById(R.id.recycleView);
         getCurrentWeather(this, recyclerView);
-//        recyclerView.setHasFixedSize(true);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        RecycleAdapter adapter = new RecycleAdapter(this, citysTemp);
-//        recyclerView.setAdapter(adapter);
+
 
     }
 
 
-
+// функция запроса и вывода в recycle view
     void getCurrentWeather(Context context, RecyclerView recyclerView) {
+        // проходимся по массиву городов
         for (int i = 0; i < city.length; i++) {
+            // делаем запрос на сервер через ретрофит
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -80,8 +76,7 @@ public class SecondActivity extends AppCompatActivity {
 
             Call<WeatherResponse> call = service.getCurrentSityData(city[i], Constants.API_KEY);
 
-            //Call<WeatherResponse> call = service.getCurrentWetherData(lat, lon, Constants.API_KEY);
-            //Call<List> call = service.getCityList("12,32,15,37,10", Constants.API_KEY);
+            // пишем функцию callback
             int finalI = i;
             call.enqueue(new Callback<WeatherResponse>() {
                 @Override
@@ -89,36 +84,18 @@ public class SecondActivity extends AppCompatActivity {
                     if (response.code() == 200) {
                         WeatherResponse weatherResponse = response.body();
                         assert weatherResponse != null;
-                       // citysTemp.put(city[finalI], weatherResponse.main.temp + "");
-                        String stringBuilder = "Country: " +
-                                weatherResponse.sys.country +
-                                "\n" +
-                                "Temperature: " +
-                                weatherResponse.main.temp +
-                                "\n" +
-                                "Temperature(Min): " +
-                                weatherResponse.main.temp_min +
-                                "\n" +
-                                "Temperature(Max): " +
-                                weatherResponse.main.temp_max +
-                                "\n" +
-                                weatherResponse.weather +
-                                "\n" +
-                                city[finalI];
+                        // превращяем все в градусы
                         double gradus = weatherResponse.main.temp - 273.15;
                         citysTemp.add(new CitysTemp(city[finalI], "Градусов: " + gradus ));
                         Log.d("TAG", citysTemp.get(0).getCity());
-
+                        // выводим в recycleview
                         recyclerView.setHasFixedSize(true);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         recyclerView.setLayoutManager(linearLayoutManager);
                         RecycleAdapter adapter = new RecycleAdapter(context, citysTemp);
                         recyclerView.setAdapter(adapter);
-                        //Log.d("TAG", city[finalI] + " " + weatherResponse.main.temp);
 
-
-                        //textTest.setText(stringBuilder);
                     }
 
                 }

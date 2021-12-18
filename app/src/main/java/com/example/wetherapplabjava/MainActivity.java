@@ -58,25 +58,25 @@ public class MainActivity extends AppCompatActivity {
         weatherData = findViewById(R.id.weatherText);
         btn = findViewById(R.id.button);
         secondBtn = findViewById(R.id.secondActivityBtn);
-
+    // переход к второй активности
         secondBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, SecondActivity.class);
             intent.putExtra(MY_KEY, latitude);
             startActivity(intent);
         });
-
+// слушатель кнопки при нажитии
         btn.setOnClickListener(v -> {
             getCurrentWeather(latitude, longitude);
                 }
         );
     // создаем клиента для вывода текущей геолакации
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        // получения долготы и широты
         getLastLocation();
 
     }
 
-
+// функция для определения гелокационных данных
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
 
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             getLastLocation();
         }
     }
-
+// получаем текущию погоду
     void getCurrentWeather(String lat, String lon) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl)
@@ -187,13 +187,11 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     WeatherResponse weatherResponse = response.body();
                     assert weatherResponse != null;
-
+                    // превращения в градусы
                     double gradus = weatherResponse.main.temp;
                     gradus = gradus - 273.15;
 
                     String stringBuilder = "Country: " +
-                            weatherResponse.sys.country +
-                            "\n" +
                             "Temperature: " +
                             weatherResponse.main.temp +
                             "\n" +
